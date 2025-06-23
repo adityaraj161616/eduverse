@@ -10,12 +10,16 @@ function getRazorpayInstance() {
       throw new Error("Razorpay credentials not configured")
     }
 
-    // Dynamic import to avoid build-time initialization
-    const Razorpay = require("razorpay")
-    razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
-    })
+    try {
+      // Dynamic import to avoid build-time initialization
+      const Razorpay = require("razorpay")
+      razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+      })
+    } catch (error) {
+      throw new Error("Razorpay package not installed. Run: npm install razorpay")
+    }
   }
   return razorpay
 }
@@ -34,36 +38,66 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    const razorpayInstance = getRazorpayInstance()
+    try {
+      const razorpayInstance = getRazorpayInstance()
 
-    const options = {
-      amount: amount * 100, // Razorpay expects amount in paise
-      currency: currency || "INR",
-      receipt: `course_${courseId}_${Date.now()}`,
-      notes: {
-        courseId,
-        userEmail: userDetails.email,
-        userName: userDetails.fullName,
-        userPhone: userDetails.phone,
-      },
+      const options = {
+        amount: amount * 100, // Razorpay expects amount in paise
+        currency: currency || "INR",
+        receipt: `course_${courseId}_${Date.now()}`,
+        notes: {
+          courseId,
+          userEmail: userDetails.email,
+          userName: userDetails.fullName,
+          userPhone: userDetails.phone,
+        },
+      }
+
+      const order = await razorpayInstance.orders.create(options)
+
+      return NextResponse.json({
+        id: order.id,
+        amount: order.amount,
+        currency: order.currency,
+        receipt: order.receipt,
+      })
+    } catch (razorpayError) {
+      console.error("Razorpay error:", razorpayError)
+
+      if (razorpayError instanceof Error && razorpayError.message.includes("not installed")) {
+        return NextResponse.json(
+          {
+            error: "Payment gateway not available. Please contact support.",
+          },
+          { status: 503 },
+        )
+      }
+
+      return NextResponse.json(
+        {
+          error: "Payment service temporarily unavailable",
+        },
+        { status: 503 },
+      )
     }
-
-    const order = await razorpayInstance.orders.create(options)
-
-    return NextResponse.json({
-      id: order.id,
-      amount: order.amount,
-      currency: order.currency,
-      receipt: order.receipt,
-    })
   } catch (error) {
-    console.error("Error creating Razorpay order:", error)
+    console.error("Error creating payment order:", error)
 
-    // Handle specific Razorpay errors
+    // Handle specific configuration errors
     if (error instanceof Error && error.message.includes("not configured")) {
-      return NextResponse.json({ error: "Payment gateway not configured. Please contact support." }, { status: 503 })
+      return NextResponse.json(
+        {
+          error: "Payment gateway not configured. Please contact support.",
+        },
+        { status: 503 },
+      )
     }
 
-    return NextResponse.json({ error: "Failed to create payment order" }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: "Failed to create payment order",
+      },
+      { status: 500 },
+    )
   }
 }
