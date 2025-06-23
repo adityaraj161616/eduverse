@@ -292,51 +292,54 @@ export default function MyCoursesPage() {
                       </div>
                     </div>
 
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="line-clamp-2 text-lg group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                            {course.title}
-                          </CardTitle>
-                          <CardDescription className="text-slate-600 dark:text-slate-300">
-                            By {course.instructor} • {course.duration}
-                          </CardDescription>
-                        </div>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600 dark:text-slate-300">Progress</span>
-                          <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            {course.progress}%
-                          </span>
-                        </div>
-                        <Progress value={course.progress} className="h-2" />
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {course.completedLessons} of {course.totalLessons} lessons completed
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                        <div className="flex items-center">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          Enrolled: {new Date(course.enrolledAt).toLocaleDateString()}
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                            <Download className="h-3 w-3" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                            <Share2 className="h-3 w-3" />
+                    {/* Add a solid or semi-transparent background to the text area */}
+                    <div className="px-6 pt-4 pb-2 bg-white/95 dark:bg-slate-800/95">
+                      <CardHeader className="p-0 mb-2">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="line-clamp-2 text-lg text-blue-900 dark:text-blue-200">
+                              {course.title}
+                            </CardTitle>
+                            <CardDescription className="text-slate-600 dark:text-slate-300">
+                              By {course.instructor} • {course.duration}
+                            </CardDescription>
+                          </div>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
                           </Button>
                         </div>
-                      </div>
-                    </CardContent>
+                      </CardHeader>
+
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-600 dark:text-slate-300">Progress</span>
+                            <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                              {course.progress}%
+                            </span>
+                          </div>
+                          <Progress value={course.progress} className="h-2" />
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            {course.completedLessons} of {course.totalLessons} lessons completed
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                          <div className="flex items-center">
+                            <Calendar className="h-3 w-3 mr-1" />
+                            Enrolled: {new Date(course.enrolledAt).toLocaleDateString()}
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <Download className="h-3 w-3" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <Share2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </div>
 
                     <CardContent className="pt-0">
                       <Button

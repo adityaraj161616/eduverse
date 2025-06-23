@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -34,7 +33,6 @@ interface Certificate {
 }
 
 export default function AchievementsPage() {
-  const { data: session } = useSession()
   const [enrolledCourses, setEnrolledCourses] = useState([])
 
   useEffect(() => {

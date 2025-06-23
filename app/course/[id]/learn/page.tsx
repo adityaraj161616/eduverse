@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { ChevronLeft, ChevronRight, Play, CheckCircle, Clock, Download, Award } from "lucide-react"
 import Link from "next/link"
+import { progressManager } from "@/lib/progress-manager"
 
 interface Lesson {
   id: string
@@ -347,31 +348,34 @@ export default function CourseLearnPage() {
 
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<string[]>([])
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Load progress from localStorage
-    const savedProgress = localStorage.getItem(`course-${courseId}-progress`)
-    if (savedProgress) {
-      const { completed, section, lesson } = JSON.parse(savedProgress)
-      setCompletedLessons(completed || [])
-      setCurrentSectionIndex(section || 0)
-      setCurrentLessonIndex(lesson || 0)
+    // Check if user is enrolled
+    if (!progressManager.isEnrolledInCourse(courseId)) {
+      router.push(`/course/${courseId}`)
+      return
     }
-  }, [courseId])
+
+    // Load progress from progress manager
+    const progress = progressManager.getCourseProgress(courseId)
+    if (progress) {
+      setCompletedLessons(progress.completedLessons)
+      setCurrentSectionIndex(progress.currentSection)
+      setCurrentLessonIndex(progress.currentLesson)
+    }
+  }, [courseId, router])
 
   useEffect(() => {
-    // Save progress to localStorage
-    const progressData = {
-      completed: completedLessons,
-      section: currentSectionIndex,
-      lesson: currentLessonIndex,
+    // Update progress when section/lesson changes
+    if (course) {
+      progressManager.updateCourseProgress(courseId, {
+        currentSection: currentSectionIndex,
+        currentLesson: currentLessonIndex,
+      })
     }
-    localStorage.setItem(`course-${courseId}-progress`, JSON.stringify(progressData))
-  }, [completedLessons, currentSectionIndex, currentLessonIndex, courseId])
+  }, [currentSectionIndex, currentLessonIndex, courseId, course])
 
   if (!course) {
     return (
@@ -397,7 +401,21 @@ export default function CourseLearnPage() {
 
   const markLessonComplete = () => {
     if (currentLesson && !completedLessons.includes(currentLesson.id)) {
-      setCompletedLessons([...completedLessons, currentLesson.id])
+      const newCompletedLessons = [...completedLessons, currentLesson.id]
+      setCompletedLessons(newCompletedLessons)
+
+      // Update progress manager
+      progressManager.markLessonComplete(courseId, currentLesson.id, totalLessons)
+
+      // Show success message
+      const event = new CustomEvent("showToast", {
+        detail: {
+          title: "Lesson Completed! 🎉",
+          description: `You've completed "${currentLesson.title}"`,
+          type: "success",
+        },
+      })
+      window.dispatchEvent(event)
     }
   }
 
@@ -423,7 +441,7 @@ export default function CourseLearnPage() {
   const isConclusionSection = currentSection?.id === "conclusion"
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
+    <div className="min-h-screen bg-slate-900 text-white pt-20">
       {/* Header */}
       <header className="bg-slate-800 border-b border-slate-700 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -452,7 +470,7 @@ export default function CourseLearnPage() {
         </div>
       </header>
 
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className="flex h-[calc(100vh-160px)]">
         {/* Sidebar - Course Content */}
         <div className="w-80 bg-slate-800 border-r border-slate-700 overflow-y-auto">
           <div className="p-6">

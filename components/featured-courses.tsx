@@ -242,32 +242,35 @@ export function FeaturedCourses() {
 
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <Badge variant="outline" className="text-xs font-medium mb-4 text-gray-600 border-green-200">
+                      <Badge
+                        variant="outline"
+                        className="text-xs font-medium mb-4 text-gray-800 border-gray-300 bg-gray-100"
+                      >
                         {course.category}
                       </Badge>
 
                       <motion.h3
-                        className="text-2xl font-bold mb-4 font-display group-hover:gradient-text transition-all duration-500"
+                        className="text-2xl font-bold mb-4 font-display text-gray-900 group-hover:gradient-text transition-all duration-500"
                         whileHover={{ x: 5 }}
                       >
                         {course.title}
                       </motion.h3>
 
-                      <p className="text-gray-600 leading-relaxed font-light">{course.description}</p>
+                      <p className="text-gray-800 leading-relaxed font-normal">{course.description}</p>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-8">
+                    <div className="flex items-center justify-between text-sm text-gray-700 mb-8">
                       <motion.div className="flex items-center" whileHover={{ scale: 1.05 }}>
                         <Clock className="h-4 w-4 mr-2 text-green-500" />
-                        <span className="font-medium">{course.duration}</span>
+                        <span className="font-semibold text-gray-800">{course.duration}</span>
                       </motion.div>
                       <motion.div className="flex items-center" whileHover={{ scale: 1.05 }}>
                         <Users className="h-4 w-4 mr-2 text-blue-500" />
-                        <span className="font-medium">{course.students}</span>
+                        <span className="font-semibold text-gray-800">{course.students}</span>
                       </motion.div>
                       <motion.div className="flex items-center" whileHover={{ scale: 1.05 }}>
                         <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium">{course.rating}</span>
+                        <span className="font-semibold text-gray-800">{course.rating}</span>
                       </motion.div>
                     </div>
 

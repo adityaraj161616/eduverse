@@ -144,8 +144,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-900 dark:via-slate-800/50 dark:to-purple-900/20">
+      <div className="container mx-auto px-4 py-8 pt-24">
         <motion.div initial="hidden" animate="visible" variants={containerVariants}>
           {/* Header */}
           <motion.div variants={itemVariants} className="mb-12 pt-32">

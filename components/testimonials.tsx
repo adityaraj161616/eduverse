@@ -181,13 +181,15 @@ export function Testimonials() {
                   {/* Quote */}
                   <div className="relative mb-6">
                     <Quote className="absolute -top-2 -left-2 w-8 h-8 text-blue-500/20" />
-                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed pl-6">"{testimonial.content}"</p>
+                    <p className="text-gray-900 dark:text-slate-300 leading-relaxed pl-6 font-medium">
+                      "{testimonial.content}"
+                    </p>
                   </div>
 
                   {/* Course Badge */}
                   <Badge
                     variant="outline"
-                    className="mb-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700 text-xs"
+                    className="mb-4 bg-blue-100 text-blue-800 border-blue-300 text-xs font-semibold"
                   >
                     {testimonial.course}
                   </Badge>
@@ -205,12 +207,9 @@ export function Testimonials() {
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-slate-800" />
                     </div>
                     <div className="ml-3">
-                      <div className="font-semibold text-slate-900 dark:text-slate-100">{testimonial.name}</div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">
-                        {testimonial.role} at{" "}
-                        <span className="font-medium bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                          {testimonial.company}
-                        </span>
+                      <div className="font-bold text-gray-900 dark:text-slate-100">{testimonial.name}</div>
+                      <div className="text-sm text-gray-700 dark:text-slate-400">
+                        {testimonial.role} at <span className="font-semibold text-blue-600">{testimonial.company}</span>
                       </div>
                     </div>
                   </div>

@@ -52,7 +52,7 @@ export default function AboutPage() {
     {
       name: "Jane Smith",
       role: "Head of Content",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1626639900752-3ea9001925ae?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDMyfHRvd0paRnNrcEdnfHxlbnwwfHx8fHw%3D",
       description: "Curriculum designer and instructional expert focused on creating engaging learning experiences.",
     },
     {

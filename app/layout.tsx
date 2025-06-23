@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
-import { Navbar } from "@/components/navbar"
+import Navbar from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Toaster } from "@/components/ui/toaster"
 import { VideoPreloader } from "@/components/video-preloader"
@@ -14,7 +14,6 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 export const metadata: Metadata = {
   title: "EduVerse - Learn Anywhere, Build Skills That Matter",
   description: "Empowering minds through innovative education. Join thousands of learners worldwide.",
-    generator: 'v0.dev'
 }
 
 // Define videos to preload based on routes and priority

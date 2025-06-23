@@ -244,7 +244,7 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Video Loading Indicator */}
+      {/* Video Loading Indicator
       {!videoLoaded && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -257,7 +257,7 @@ export function Hero() {
             <span className="text-sm">Loading video...</span>
           </div>
         </motion.div>
-      )}
+      )} */}
 
       {/* Floating Elements */}
       <motion.div
